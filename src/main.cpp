@@ -17,14 +17,13 @@
 #include "display.h"
 #include "weather.h"
 
+#include "settings.h"
+
 // ntp stuff
 NTP NTPclient;
-#define CET 1 // central european time
 
 // weather related stuff
 time_t lastweatherinfoupdate=0;			// last weather update EPOCH timestamp
-#define WEATHER_POLL_INTERVAL	300						// in seconds
-#define CONFIGRESETBUTTON D5 // D5 - GPIO 14 on nodemcu hw
 
 bool reset_trigger = false;
 
@@ -50,7 +49,11 @@ void display_weather()
 	clr();
 	int t=getTemp();
 	char buf[6];
-	sprintf(buf,"%dC",t);
+	if (strcmp(units, "metric") == 0) {
+		sprintf(buf,"%dC",t);
+	} else {
+		sprintf(buf,"%dF",t);
+	}
 	drawString(0,font,buf);
 	drawChar(24,weather_icons,getWeatherIcon());
 	drawChar(18,winddir_icons,getWinddir());
@@ -65,7 +68,7 @@ void display_clock()
 
 void setup()
 {
-	Serial.begin(9600);
+	Serial.begin(serialBuadRate);
 	Serial.println(); Serial.println("boot"); Serial.println();
 
 	// set flash button to config resetter
@@ -78,10 +81,10 @@ void setup()
 	setupWiFi();
 
 	ArduinoOTA.setHostname("matrixclock");
-  ArduinoOTA.setPassword("matrixclockfirmware");
+    ArduinoOTA.setPassword("matrixclockfirmware");
 	ArduinoOTA.begin(); 
 
-  NTPclient.begin("hu.pool.ntp.org", CET);
+  NTPclient.begin(NTPServer, timeZone);
   setSyncInterval(SECS_PER_HOUR);
   setSyncProvider(getNTPtime);
 
@@ -90,7 +93,7 @@ void setup()
 
 void loop()
 {
-	uint8_t	timeslice=now() % 20;
+	uint8_t	timeslice=now() % swapTimeout;
 	if ((timeslice >4) && (timeslice <8))
 	{
 		display_weather();

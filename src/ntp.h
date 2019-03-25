@@ -27,10 +27,10 @@ class NTP
 	#define NTP_PACKET_SIZE 48 // NTP time stamp is in the first 48 bytes of the message
 	#define seventyYears 2208988800UL // Unix time starts on Jan 1 1970. that's 2208988800 seconds
 
-    void sendNTPpacket(IPAddress &address);
-    uint8_t DSToffset(time_t date);
+  void sendNTPpacket(IPAddress &address);
+  uint8_t DSToffset(time_t date);
 	
-    WiFiUDP UDP; // A UDP instance to let us send and receive packets over UDP
+  WiFiUDP UDP; // A UDP instance to let us send and receive packets over UDP
 	uint8_t packetBuffer[ NTP_PACKET_SIZE]; //buffer to hold incoming and outgoing packets
 	const char* _serverName;
 	time_t _syncInterval = SECS_PER_HOUR;

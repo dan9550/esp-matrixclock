@@ -4,5 +4,6 @@ nogit
 .DS_Store
 .pioenvs
 .piolibdeps
+.vscode
 dev.sh
 Guardfile

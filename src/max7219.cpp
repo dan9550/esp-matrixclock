@@ -52,12 +52,12 @@ void initMAX7219()
   sendCmdAll(CMD_DISPLAYTEST, 0);
   sendCmdAll(CMD_SCANLIMIT, 7);
   sendCmdAll(CMD_DECODEMODE, 0);
-  sendCmdAll(CMD_INTENSITY, 1);
+  sendCmdAll(CMD_INTENSITY, 1); // Needed?
   sendCmdAll(CMD_SHUTDOWN, 0);
   clr();
   refreshAll();
   sendCmdAll(CMD_SHUTDOWN,1);
-  sendCmdAll(CMD_INTENSITY,6);
+  sendCmdAll(CMD_INTENSITY,displayBrightness);
 }
 
 #define SETBIT(theport,thebit) ((theport) |= (1<<thebit))

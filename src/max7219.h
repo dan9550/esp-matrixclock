@@ -3,6 +3,8 @@
 
 #include <Arduino.h>
 
+#include "settings.h"
+
 #define NUM_MAX			4
 #define DIN_PIN			15  // D8
 #define CS_PIN		  13  // D7

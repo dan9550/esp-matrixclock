@@ -70,7 +70,7 @@ int getTemp()
 
 void getWeatherData(const char *weatherKey, const char* cityID)
 {
-	String url = String(weatherHost) + "/data/2.5/weather?id=" + cityID + "&units=metric&appid=" + weatherKey + weatherLang;
+	String url = String(weatherHost) + "/data/2.5/weather?id=" + cityID + "&units=" + units + "&appid=" + weatherKey + weatherLang;
 	String line;
 	// Serial.println(String("GET " + url)); // debug info
 

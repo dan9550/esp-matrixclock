@@ -13,6 +13,7 @@
 #include "ESP8266WiFi.h"
 #include "Arduino.h"
 #include "ntp.h"
+#include "settings.h"
 #include <Time.h>
 
 NTP::NTP(void)
@@ -92,17 +93,21 @@ uint8_t NTP::DSToffset(time_t date)
   */
   // get seconds for last Sunday of March
   tmElements_t tm;
-  tm.Month = 4; // April
   tm.Year = year(date) - 1970;
-  tm.Day = 1; // April 1st
-  tm.Hour = 2; //2AM
-  time_t beginDST = previousSunday( makeTime(tm) );
+  tm.Month = DSTStartMonth; // Sept
+  tm.Day = DSTStartDay; // 30th
+  tm.Hour = DSTStartHour; //2AM
+  time_t beginDST = nextSunday ( makeTime(tm) );
+  Serial.println ("Start of DST:");
+  Serial.println (beginDST);
   
   // get seconds for last Sunday in October
-  tm.Month = 11; // November
-  tm.Day = 1; // first day of November
-  time_t endDST = previousSunday ( makeTime(tm) );
+  tm.Month = DSTEndMonth; // March
+  tm.Day = DSTEndDay; // first day of November
+  time_t endDST = nextSunday ( makeTime(tm) );
+  Serial.println ("End of DST:");
+  Serial.println (endDST);
 
   // now, if we are between the two times we are in DST
-  return (((date >= beginDST) && (date < endDST))? 1: 0);
+  return (((date >= beginDST) || (date < endDST))? 1: 0);
 }

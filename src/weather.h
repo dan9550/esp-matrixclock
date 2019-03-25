@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
 #include <ArduinoJson.h>
+#include "settings.h"
 
 int getWinddir();
 int getWindspeed();
